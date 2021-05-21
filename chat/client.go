@@ -60,7 +60,7 @@ func (c *client) readInput() {
 			}
 		default:
 			c.err(fmt.Errorf("unknown command: %s", cmd))
-			c.msg("USAGE: /{COMMAND} {option}\nCommands\n/name {your name}\n/join {room name}\n/rooms\n/msg {your message}")
+			c.msg("USAGE: /{COMMAND} {option}\nCommands\n/name {your name}\n/join {room name}\n/rooms\n/msg {your message}\n/quit")
 		}
 	}
 }
