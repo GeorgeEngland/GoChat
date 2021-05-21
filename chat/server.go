@@ -72,8 +72,8 @@ func (s *server) join(c *client, args []string) {
 	s.quitRoom(c)
 
 	c.room = r
-	r.broadcast(c, fmt.Sprintf("%s has joined the room", c.name))
-	c.msg(fmt.Sprintf("Welcome to the room %s %s", r.name, c.name))
+	r.broadcast(c, fmt.Sprintf("%s has joined the room\n", c.name))
+	c.msg(fmt.Sprintf("Welcome to the room %s %s\n", r.name, c.name))
 }
 func (s *server) listRooms(c *client, args []string) {
 	var rooms []string
@@ -84,7 +84,7 @@ func (s *server) listRooms(c *client, args []string) {
 }
 func (s *server) message(c *client, args []string) {
 	if c.room == nil {
-		c.err(errors.New("You must join a room first"))
+		c.err(errors.New("JOIN A ROOM FIRST"))
 		return
 	}
 	c.room.broadcast(c, c.name+": "+strings.Join(args[1:], " "))
