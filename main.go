@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"net"
 
@@ -10,13 +11,14 @@ import (
 func main() {
 	s := chat.NewServer()
 	go s.Run()
-
-	listener, err := net.Listen("tcp", ":8888")
+	fmt.Println("hello")
+	port := 8888
+	listener, err := net.Listen("tcp", fmt.Sprintf(":%v", port))
 	if err != nil {
 		log.Fatalf("can't start server: %s", err.Error())
 	}
 	defer listener.Close()
-	log.Printf("Started Server: 8888")
+	log.Printf(":Started Server:%v", port)
 
 	for {
 		conn, err := listener.Accept()
