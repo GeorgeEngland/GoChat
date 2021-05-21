@@ -18,6 +18,8 @@ func (c *client) readInput() {
 	for {
 		msg, err := bufio.NewReader(c.conn).ReadString('\n')
 		if err != nil {
+			fmt.Printf("ERROR %s\n", err.Error())
+			c.conn.Close()
 			return
 		}
 		msg = strings.Trim(msg, "\r\n")
@@ -26,42 +28,26 @@ func (c *client) readInput() {
 
 		cmd := strings.TrimSpace(args[0])
 
+		com := command{client: c, args: args}
+
 		switch cmd {
 		case "/name":
-			c.commands <- command{
-				id:     CMD_NAME,
-				client: c,
-				args:   args,
-			}
+			com.id = CMD_NAME
 		case "/join":
-			c.commands <- command{
-				id:     CMD_JOIN,
-				client: c,
-				args:   args,
-			}
-
+			com.id = CMD_JOIN
 		case "/rooms":
-			c.commands <- command{
-				id:     CMD_ROOMS,
-				client: c,
-				args:   args,
-			}
+			com.id = CMD_ROOMS
 		case "/quit":
-			c.commands <- command{
-				id:     CMD_QUIT,
-				client: c,
-				args:   args,
-			}
+			com.id = CMD_QUIT
 		case "/msg":
-			c.commands <- command{
-				id:     CMD_MSG,
-				client: c,
-				args:   args,
-			}
+			com.id = CMD_MSG
 		default:
 			c.err(fmt.Errorf("unknown command: %s", cmd))
 			c.msg("USAGE: /{COMMAND} {option}\nCommands\n/name {your name}\n/join {room name}\n/rooms\n/msg {your message}\n/quit")
+			continue
 		}
+		c.commands <- com
+
 	}
 }
 
